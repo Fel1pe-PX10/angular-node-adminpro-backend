@@ -15,13 +15,11 @@ const app = express();
 // Configuracion CORS
 app.use(cors());
 
+// Lectura y parseo del body
+app.use( express.json() );
+
 // Rutas
-app.get('/', (req, res) => {
-    res.json({
-        ok:true,
-        msg: 'Hola Mundo'
-    })
-});
+app.use('/api/usuarios', require('./routes/usuarios'));
 
 
 app.listen(process.env.PORT, () => {
