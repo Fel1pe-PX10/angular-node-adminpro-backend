@@ -1,4 +1,5 @@
 const { response } = require("express");
+const hospital = require("../models/hospital");
 
 const Hospital = require('../models/hospital');
 
@@ -41,21 +42,76 @@ const crearHospital = async(req, res=response) => {
 
 }
 
-const actualizarHospital = (req, res=response) => {
+const actualizarHospital = async(req, res=response) => {
 
-    res.json({
-        ok: true,
-        msg: 'actualizarHospitales'
-    });
+    const id  = req.params.id;
+    const uid = req.uid; // se tiene acceso al uid porque se pasa por la autenticación del usuario
+
+    try {
+
+        const hospitalDb = await Hospital.findById(id);
+
+        if(!hospitalDb){
+            return res.status(400).json({
+                ok: false,
+                msg: 'Hospital no encontrado por id'
+            });
+        }
+
+        const cambiosHospital = {
+            ...req.body,
+            usuario: uid
+        };
+
+        const hospitalActualizado = await Hospital.findByIdAndUpdate(id, cambiosHospital, { new: true }); // { new: true } hace que se devuelva el documento acutalizado en la respuesta
+
+
+        res.json({
+            ok: true,
+            hospital: hospitalActualizado
+        });
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador'
+        });
+        
+    }
 
 }
 
-const borrarHospital = (req, res=response) => {
+const borrarHospital = async(req, res=response) => {
 
-    res.json({
-        ok: true,
-        msg: 'borrarHospitales'
-    });
+    const id = req.params.id;
+
+    try {
+
+        const hospitalDb = await Hospital.findById(id);
+
+        if(!hospitalDb){
+            return res.status(400).json({
+                ok: false,
+                msg: 'Error: No se encontró hospital por Id'
+            });
+        }
+
+        await Hospital.findByIdAndDelete(id);
+        
+        res.json({
+            ok: true,
+            msg: 'borrarHospitales'
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Error borrando hospital, hable con el administrador'
+        });
+    }
+
+
 
 }
 

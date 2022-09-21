@@ -21,7 +21,9 @@ router.post('/', [
 ], crearHospital );
 
 router.put('/:id', [
-    
+    validarJwt,
+    check('nombre', 'El nombre del hospital es necesario').notEmpty(),
+    resultadoMiddelware
 ], actualizarHospital );
 
 router.delete('/:id', validarJwt, borrarHospital );
