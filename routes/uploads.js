@@ -17,9 +17,7 @@ router.put('/:coleccion/:id', [
     validarJwt
 ], fileUpload );
 
-router.get('/:coleccion/:foto', [
-    validarJwt
-], retornaImagen );
+router.get('/:coleccion/:foto?', retornaImagen );
 
 
 module.exports = router;

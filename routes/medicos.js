@@ -5,7 +5,7 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 const { actualizarHospital } = require('../controllers/hospitales');
-const { getMedicos, crearMedico, actualizarMedico, borrarMedico } = require('../controllers/medicos');
+const { getMedicos, crearMedico, actualizarMedico, borrarMedico, getMecidoById } = require('../controllers/medicos');
 
 
 
@@ -31,6 +31,8 @@ router.put('/:id', [
 ], actualizarMedico );
 
 router.delete('/:id', validarJwt, borrarMedico );
+
+router.get('/:id', validarJwt, getMecidoById );
 
 
 
