@@ -7,6 +7,7 @@ const Usuario = require('../models/usuario');
 
 const { generarJwt } = require('../helpers/jwt');
 const { googleVerify } = require('../helpers/google-verify');
+const { getMenuFrontEnd } = require('../helpers/menu-frontend');
 
 
 
@@ -40,7 +41,8 @@ const login = async(req, res=response) => {
 
         res.json({
             ok: true,
-            token
+            token,
+            menu: getMenuFrontEnd( usuarioDb.role )
         });
         
     } catch (error) {
@@ -87,7 +89,8 @@ const googleSignIn = async(req, res=response) => {
             email, 
             name, 
             picture,
-            token
+            token,
+            menu: getMenuFrontEnd( usuario.role )
         });
         
     } catch (error) {
@@ -114,7 +117,8 @@ const renewToken = async(req, res=response) => {
         ok: true,
         uid,
         token,
-        usuario
+        usuario,
+        menu: getMenuFrontEnd( usuario.role )
     });
 }
 
