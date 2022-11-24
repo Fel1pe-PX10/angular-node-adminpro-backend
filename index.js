@@ -1,5 +1,7 @@
 require('dotenv').config();
 
+const path = require('path');
+
 const express = require('express');
 const cors = require('cors');
 
@@ -28,6 +30,11 @@ app.use('/api/medicos', require('./routes/medicos'));
 app.use('/api/todo', require('./routes/busquedas'));
 app.use('/api/uploads', require('./routes/uploads'));
 app.use('/api/login', require('./routes/auth'));
+
+// Ruta defecto
+app.get('*', (req, resp) => {
+ resp.sendFile(path.resolve(__dirname, 'public/index.html'))
+});
 
 
 app.listen(process.env.PORT, () => {
